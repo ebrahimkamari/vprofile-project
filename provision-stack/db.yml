@@ -12,10 +12,10 @@
       loop:
         - mysql-server
         - mysql-client
-        - python-mysqldb
-        - python3-mysqldb
+        - python-mysqldb # we use this command for Ubuntu 18
+        - python3-mysqldb  # we use this command for Ubuntu 20
         - libmysqlclient-dev
-      ignore_errors: yes
+      ignore_errors: yes  # if get an error ti ignores it
       tags:
         - package
 
@@ -32,7 +32,7 @@
         name: "{{dbuser}}"
         password: "{{dbpass}}"
         priv: '*.*:ALL'
-        host: '%'
+        host: '%'  # we can login it from remote machine
         state: present
 
 
