@@ -31,7 +31,7 @@
       mysql_user:
         name: "{{dbuser}}"
         password: "{{dbpass}}"
-        priv: '*.*:ALL'
+        priv: '*.*:ALL'  # full previlage
         host: '%'  # we can login it from remote machine
         state: present
 
@@ -44,8 +44,8 @@
     - name: Enable remote login to mysql svc
       lineinfile:
         path: /etc/mysql/mysql.conf.d/mysqld.cnf
-        regexp: '^bind-address'
-        line: 'bind-address = 0.0.0.0'
+        regexp: '^bind-address' # it search in mysqld.cnf filr and find the lines start with bind-address
+        line: 'bind-address = 0.0.0.0'  # then replace it with  bind-address = 0.0.0.0
         backup: yes
       notify:
         - Restart mysql

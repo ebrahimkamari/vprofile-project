@@ -23,8 +23,9 @@
     - name: Enable remote login to memecache
       lineinfile:
         path: /etc/memcached.conf
-        regexp: '^-l '
-        line: '-l 0.0.0.0'
+        regexp: '^-l '   # it starts searching anything that start with -l
+        line: '-l 0.0.0.0'   # and replace it with -l 0.0.0.0  then memcaches listens to
+                              # all ip addresses not just local ip
         backup: yes
       notify:
         - Restart memcached
