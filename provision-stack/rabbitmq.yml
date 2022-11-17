@@ -66,7 +66,7 @@
         - conf
 
 
-    - rabbitmq_user:
+    - rabbitmq_user: # if user and password cganged here you must cgange the user and password on application.j2
         user: test
         password: test
         configure_priv: .*
