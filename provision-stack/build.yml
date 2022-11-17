@@ -1,8 +1,9 @@
+# this playbook will executed locally on the local host on the controller machine
 - name: Generate artifact, copy artifact & sql file to files directory
   hosts: localhost
   connection: local
   become: yes
-  tasks:
+  tasks:  # first we going to install some dependencies by using apt module
     - name: Install  jdk, maven, git
       apt:
         name: "{{item}}"
@@ -16,17 +17,17 @@
 
     - name: Clone source code from github
       git:
-        repo: 'https://github.com/devopshydclub/vprofile-project.git'
+        repo: 'https://github.com/ebrahimkamari/vprofile-project.git'
         dest: ./Vprofile-repo
         version: vp-rem
-      register: git_status
+      register: git_status # output will asign to this variable
 
 
     - name: mvn install command to build artifact
       command: "mvn install"
       args:
-        chdir: Vprofile-repo
-      when: git_status.changed
+        chdir: Vprofile-repo  # change directory to vprofile-repo
+      when: git_status.changed  # just when that git_status got changed
       register: mvn_info
 
 
@@ -34,12 +35,13 @@
       copy:
         src: "{{item}}"
         dest: files/ROOT.war
-      with_fileglob: Vprofile-repo/target/*.war
-
+      with_fileglob: Vprofile-repo/target/*.war  # any war file in the target directory will be copy to
+                                                 # files/ROOT.war directory
     - name: Copy SQL file to files directory
       copy:
         src: Vprofile-repo/src/main/resources/db_backup.sql
-        dest: files/db_backup.sql
+        dest: files/db_backup.sql  #  db_backup.sql file will be copied
+                                    #in to files/db_backup.sql
 
         #    - name: Copy artifacts to files directory
         #command: "cp Vprofile-repo/target/vprofile-v2.war files/"
